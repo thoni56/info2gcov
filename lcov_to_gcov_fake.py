@@ -3,21 +3,22 @@
 import argparse
 
 
-def collate(info_content, filename):
-    data = {}
-    collecting = False
+def collate(info_content):
+    coverage = {}
     for info_line in info_content:
-        if not collecting:
-            if info_line.startswith("SF:") and info_line.endswith("/"+filename):
-                collecting = True
-        else:
-            if info_line.startswith("DA:"):
-                [line, executions] = info_line.split(":")[1].split(",")
-                add_execution_data_for_line(data, (int(line), int(executions)))
-            else:
-                if info_line.startswith("SF:"):
-                    collecting = False
-    return data
+        if info_line.startswith("SF:"):
+            # Source Filename
+            filename = info_line.split(":")[1].rstrip("\n")
+            try:
+                coverage[filename]
+            except KeyError:
+                coverage[filename] = {}
+        if info_line.startswith("DA:"):
+            # DAta
+            [line, executions] = info_line.split(":")[1].split(",")
+            add_execution_data_for_line(
+                coverage[filename], (int(line), int(executions)))
+    return coverage
 
 
 def add_execution_data_for_line(data, line_data):
@@ -38,4 +39,5 @@ if (__name__ == "__main__"):
     args = argparser.parse_args()
 
     with open(args.inputfile) as f:
-        collate(f.readlines())
+        coverage = collate(f.readlines())
+    print(coverage)

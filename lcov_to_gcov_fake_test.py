@@ -18,8 +18,9 @@ class TestLcovToGcov(unittest.TestCase):
             "FNH:0",
             "DA:251,36"
         ]
-        expected = {251: 36}
-        result = collate(info_content, "this_file.c")
+        expected = {
+            "/home/thoni/Utveckling/c-xrefactory/src/this_file.c": {251: 36}}
+        result = collate(info_content)
         self.assertEqual(result, expected)
 
     def test_collates_one_execution_for_one_line_with_multiple_files_in_info(self):
@@ -35,8 +36,10 @@ class TestLcovToGcov(unittest.TestCase):
             "FNH:0",
             "DA:251,36"
         ]
-        expected = {251: 36}
-        result = collate(info_content, "this_file.c")
+        expected = {
+            "/home/thoni/Utveckling/c-xrefactory/src/not_this_file.c": {},
+            "/home/thoni/Utveckling/c-xrefactory/src/this_file.c": {251: 36}}
+        result = collate(info_content)
         self.assertEqual(result, expected)
 
     def test_can_add_executions_to_empty_line_data(self):
