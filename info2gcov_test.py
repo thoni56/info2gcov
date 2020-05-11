@@ -1,7 +1,7 @@
 import unittest
 import unittest.mock
 
-from lcov_to_gcov_fake import collate, add_execution_data_for_line
+from info2gcov import collate, add_execution_data_for_line
 
 
 class TestLcovToGcov(unittest.TestCase):
