@@ -74,8 +74,15 @@ if (__name__ == "__main__"):
         coverage = collate(f.readlines())
     for filename in coverage.keys():
         if not args.quiet:
-            print(filename)
-        with open(filename+".gcov", "w") as gcov_file:
-            for line in coverage[filename].keys():
-                gcov_file.write("{}:{}:\n".format(
-                    coverage[filename][line], line))
+            print(filename, end="")
+        try:
+            with open(filename+".gcov", "w") as gcov_file:
+                for line in coverage[filename].keys():
+                    gcov_file.write("{}:{}:\n".format(
+                        coverage[filename][line], line))
+            if not args.quiet:
+                print(" - Done")
+        except IOError:
+            # Ignore files which we can't write to
+            if not args.quiet:
+                print(" - ERROR: Could not write")
