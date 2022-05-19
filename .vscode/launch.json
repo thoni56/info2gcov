@@ -1,0 +1,17 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "info2gcov c-xrefactory",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/info2gcov.py",
+      "console": "integratedTerminal",
+      "cwd": "/Users/thomas/Utveckling/c-xrefactory/src",
+      "args": ["unittests.info"]
+    }
+  ]
+}

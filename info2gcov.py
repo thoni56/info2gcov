@@ -44,7 +44,7 @@ def collate(info_content):
             except KeyError:
                 coverage[filename] = {}
         if info_line.startswith("DA:"):
-            # DAta
+            # Data
             [line, executions] = info_line.split(":")[1].split(",")
             add_execution_data_for_line(
                 coverage[filename], (int(line), int(executions)))
@@ -62,7 +62,7 @@ def add_execution_data_for_line(data, line_data):
 if (__name__ == "__main__"):
 
     argparser = argparse.ArgumentParser(
-        description='Read an info file from lcov and convert it to aggregated single files or all source files in it')
+        description='Read an info file created by lcov and convert it to single .gcov files for each source file in it')
     argparser.add_argument(
         'inputfile', help='name of the info file from lcov')
     argparser.add_argument(
@@ -77,9 +77,9 @@ if (__name__ == "__main__"):
             print(filename, end="")
         try:
             with open(filename+".gcov", "w") as gcov_file:
-                for line in coverage[filename].keys():
-                    gcov_file.write("{}:{}:\n".format(
-                        coverage[filename][line], line))
+                for covered_linenumber in coverage[filename].keys():
+                    gcov_file.write("{}:{}: source\n".format(
+                        coverage[filename][covered_linenumber], covered_linenumber))
             if not args.quiet:
                 print(" - Done")
         except IOError:
