@@ -77,9 +77,13 @@ if (__name__ == "__main__"):
             print(filename, end="")
         try:
             with open(filename+".gcov", "w") as gcov_file:
-                for covered_linenumber in coverage[filename].keys():
-                    gcov_file.write("{}:{}: source\n".format(
-                        coverage[filename][covered_linenumber], covered_linenumber))
+                gcov_file.write("      -:    0:Source:{}\n".format(filename))
+                for line in coverage[filename].keys():
+                    if coverage[filename][line] == 0:
+                        gcov_file.write("{:>7s}:{:>5}:\n".format("#####", line))
+                    else:
+                        gcov_file.write("{:>7}:{:>5}:\n".format(
+                            coverage[filename][line], line))
             if not args.quiet:
                 print(" - Done")
         except IOError:
